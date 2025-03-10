@@ -1,0 +1,39 @@
+{
+  "name": "node-red-contrib-dynamodb-variable",
+  "version": "1.0.2",
+  "description": "Module for AWS DynamoDB integration with Node-RED",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.470.0",
+    "@aws-sdk/lib-dynamodb": "^3.470.0"
+  },
+  "main": "dynamodb-variable.js",
+  "scripts": {
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lotockii/node-red-contrib-dynamodb-variable.git"
+  },
+  "keywords": [
+    "node-red",
+    "dynamodb",
+    "aws",
+    "database"
+  ],
+  "node-red": {
+    "version": ">=2.0.0",
+    "nodes": {
+      "dynamodb-variable": "dynamodb-variable.js",
+      "dynamodb-variable-config": "dynamodb-variable-config.js"
+    }
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "author": "Andrii Lototskyi <dn050992lan@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lotockii/node-red-contrib-dynamodb-variable/issues"
+  },
+  "homepage": "https://github.com/lotockii/node-red-contrib-dynamodb-variable#readme"
+}

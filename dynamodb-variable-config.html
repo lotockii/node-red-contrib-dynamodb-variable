@@ -1,0 +1,49 @@
+<script type="text/javascript">
+  RED.nodes.registerType("dynamodb-variable-config", {
+    category: "config",
+    defaults: {
+      name: { value: "" },
+      region: { value: "eu-central-1", required: true }
+    },
+    credentials: {
+      accessKeyId: { type: "text", required: true },
+      secretAccessKey: { type: "password", required: true }
+    },
+    label: function () {
+      return this.name || "AWS Config (" + this.region + ")";
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="dynamodb-variable-config">
+  <div class="form-row">
+    <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-config-input-name" placeholder="Configuration Name">
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-region"><i class="fa fa-globe"></i> Region</label>
+    <select id="node-config-input-region">
+      <option value="us-east-1">US East (N. Virginia)</option>
+      <option value="us-east-2">US East (Ohio)</option>
+      <option value="us-west-1">US West (N. California)</option>
+      <option value="us-west-2">US West (Oregon)</option>
+      <option value="eu-central-1" selected>EU (Frankfurt)</option>
+      <option value="eu-west-1">EU (Ireland)</option>
+      <option value="eu-west-2">EU (London)</option>
+      <option value="eu-west-3">EU (Paris)</option>
+      <option value="ap-northeast-1">Asia Pacific (Tokyo)</option>
+      <option value="ap-northeast-2">Asia Pacific (Seoul)</option>
+      <option value="ap-south-1">Asia Pacific (Mumbai)</option>
+      <option value="ap-southeast-1">Asia Pacific (Singapore)</option>
+      <option value="ap-southeast-2">Asia Pacific (Sydney)</option>
+    </select>
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-accessKeyId"><i class="fa fa-key"></i> Access Key ID</label>
+    <input type="text" id="node-config-input-accessKeyId">
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-secretAccessKey"><i class="fa fa-lock"></i> Secret Access Key</label>
+    <input type="password" id="node-config-input-secretAccessKey">
+  </div>
+</script>

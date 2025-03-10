@@ -1,0 +1,576 @@
+[
+  {
+    "id": "35cc5c27eaa9271f",
+    "type": "tab",
+    "label": "DynamoDB Tests",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "bd95fc5dd01568e1",
+    "type": "inject",
+    "z": "35cc5c27eaa9271f",
+    "name": "",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 120,
+    "y": 160,
+    "wires": [
+      [
+        "3d786f77d517c7d2"
+      ]
+    ]
+  },
+  {
+    "id": "33fb1055c537cdbd",
+    "type": "debug",
+    "z": "35cc5c27eaa9271f",
+    "name": "debug 1",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 700,
+    "y": 160,
+    "wires": []
+  },
+  {
+    "id": "3d786f77d517c7d2",
+    "type": "function",
+    "z": "35cc5c27eaa9271f",
+    "name": "function 1",
+    "func": "msg.payload = {\n    \"tableName\": \"Users\",\n    \"keySchema\": [\n        { \"AttributeName\": \"userId\", \"KeyType\": \"HASH\" }\n    ]\n};\n\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 300,
+    "y": 160,
+    "wires": [
+      [
+        "aca068b24675507b"
+      ]
+    ]
+  },
+  {
+    "id": "1c3347f83fb50c56",
+    "type": "inject",
+    "z": "35cc5c27eaa9271f",
+    "name": "",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 120,
+    "y": 240,
+    "wires": [
+      [
+        "abed92f238cb4085"
+      ]
+    ]
+  },
+  {
+    "id": "f9fdedbd9f19b0ba",
+    "type": "debug",
+    "z": "35cc5c27eaa9271f",
+    "name": "debug 2",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 700,
+    "y": 240,
+    "wires": []
+  },
+  {
+    "id": "abed92f238cb4085",
+    "type": "function",
+    "z": "35cc5c27eaa9271f",
+    "name": "function 2",
+    "func": "msg.payload = {\n    \"tableName\": \"Users\",\n    \"data\": {\n        \"userId\": \"12345\",\n        \"name\": \"John Doe\",\n        \"email\": \"john.doe@example.com\",\n        \"age\": 30\n    }\n};\n\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 300,
+    "y": 240,
+    "wires": [
+      [
+        "08eca3673b2a3ed2"
+      ]
+    ]
+  },
+  {
+    "id": "b7160ca8d43fd200",
+    "type": "inject",
+    "z": "35cc5c27eaa9271f",
+    "name": "",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 120,
+    "y": 320,
+    "wires": [
+      [
+        "e9f35f529e0b56a3"
+      ]
+    ]
+  },
+  {
+    "id": "42086ec271055f5c",
+    "type": "debug",
+    "z": "35cc5c27eaa9271f",
+    "name": "debug 3",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 700,
+    "y": 320,
+    "wires": []
+  },
+  {
+    "id": "e9f35f529e0b56a3",
+    "type": "function",
+    "z": "35cc5c27eaa9271f",
+    "name": "function 3",
+    "func": "msg.payload = {\n    \"tableName\": \"Users\",\n    \"key\": {\n        \"userId\": \"12345\"\n    }\n};\n\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 300,
+    "y": 320,
+    "wires": [
+      [
+        "3de7136c4b8977bd"
+      ]
+    ]
+  },
+  {
+    "id": "224266e9ef1e99d0",
+    "type": "inject",
+    "z": "35cc5c27eaa9271f",
+    "name": "",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 120,
+    "y": 400,
+    "wires": [
+      [
+        "62626555995ea0be"
+      ]
+    ]
+  },
+  {
+    "id": "4f36976b42976a10",
+    "type": "debug",
+    "z": "35cc5c27eaa9271f",
+    "name": "debug 4",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 700,
+    "y": 400,
+    "wires": []
+  },
+  {
+    "id": "62626555995ea0be",
+    "type": "function",
+    "z": "35cc5c27eaa9271f",
+    "name": "function 4",
+    "func": "msg.payload = {\n    \"tableName\": \"Users\",\n    \"key\": {\n        \"userId\": \"12345\"\n    },\n    \"updateExpression\": \"SET #n = :name, #e = :email, #a = :age\",\n    \"expressionValues\": {\n        \":name\": \"John Updated\",\n        \":email\": \"john.updated@example.com\",\n        \":age\": 31\n    },\n    \"expressionNames\": {\n        \"#n\": \"name\",\n        \"#e\": \"email\",\n        \"#a\": \"age\"\n    }\n};\n\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 300,
+    "y": 400,
+    "wires": [
+      [
+        "a07c4330be5a514c"
+      ]
+    ]
+  },
+  {
+    "id": "1c552439898300b6",
+    "type": "inject",
+    "z": "35cc5c27eaa9271f",
+    "name": "",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 120,
+    "y": 480,
+    "wires": [
+      [
+        "7856023d218c7120"
+      ]
+    ]
+  },
+  {
+    "id": "9faebfec05327623",
+    "type": "debug",
+    "z": "35cc5c27eaa9271f",
+    "name": "debug 5",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 700,
+    "y": 480,
+    "wires": []
+  },
+  {
+    "id": "7856023d218c7120",
+    "type": "function",
+    "z": "35cc5c27eaa9271f",
+    "name": "function 5",
+    "func": "msg.payload = {\n    \"tableName\": \"Users\"\n};\n\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 300,
+    "y": 480,
+    "wires": [
+      [
+        "75512cf370498126"
+      ]
+    ]
+  },
+  {
+    "id": "4ea5fdca6fb44cb9",
+    "type": "inject",
+    "z": "35cc5c27eaa9271f",
+    "name": "",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 120,
+    "y": 560,
+    "wires": [
+      [
+        "f7688228f159187f"
+      ]
+    ]
+  },
+  {
+    "id": "7bbe13a1649dc157",
+    "type": "debug",
+    "z": "35cc5c27eaa9271f",
+    "name": "debug 6",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 700,
+    "y": 560,
+    "wires": []
+  },
+  {
+    "id": "f7688228f159187f",
+    "type": "function",
+    "z": "35cc5c27eaa9271f",
+    "name": "function 6",
+    "func": "msg.payload = {\n    \"tableName\": \"Users\",\n    \"keyConditionExpression\": \"#id = :userId\",\n    \"expressionValues\": {\n        \":userId\": \"12345\"\n    },\n    \"expressionNames\": {\n        \"#id\": \"userId\"\n    }\n};\n\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 300,
+    "y": 560,
+    "wires": [
+      [
+        "8d5bcf788c539d87"
+      ]
+    ]
+  },
+  {
+    "id": "ae5e2c9026b42eb9",
+    "type": "inject",
+    "z": "35cc5c27eaa9271f",
+    "name": "",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 120,
+    "y": 640,
+    "wires": [
+      [
+        "894c2b30ce44e8b3"
+      ]
+    ]
+  },
+  {
+    "id": "0eb3d857e9309079",
+    "type": "debug",
+    "z": "35cc5c27eaa9271f",
+    "name": "debug 7",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 700,
+    "y": 640,
+    "wires": []
+  },
+  {
+    "id": "894c2b30ce44e8b3",
+    "type": "function",
+    "z": "35cc5c27eaa9271f",
+    "name": "function 7",
+    "func": "msg.payload = {\n    \"tableName\": \"Users\",\n    \"key\": {\n        \"userId\": \"12345\"\n    }\n};\n\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 300,
+    "y": 640,
+    "wires": [
+      [
+        "d106556a57574e8f"
+      ]
+    ]
+  },
+  {
+    "id": "aca068b24675507b",
+    "type": "dynamodb-variable",
+    "z": "35cc5c27eaa9271f",
+    "awsConfig": "b34262ba5517875e",
+    "operation": "createTable",
+    "x": 500,
+    "y": 160,
+    "wires": [
+      [
+        "33fb1055c537cdbd"
+      ]
+    ]
+  },
+  {
+    "id": "08eca3673b2a3ed2",
+    "type": "dynamodb-variable",
+    "z": "35cc5c27eaa9271f",
+    "awsConfig": "b34262ba5517875e",
+    "operation": "putItem",
+    "x": 500,
+    "y": 240,
+    "wires": [
+      [
+        "f9fdedbd9f19b0ba"
+      ]
+    ]
+  },
+  {
+    "id": "3de7136c4b8977bd",
+    "type": "dynamodb-variable",
+    "z": "35cc5c27eaa9271f",
+    "awsConfig": "b34262ba5517875e",
+    "operation": "getItem",
+    "x": 500,
+    "y": 320,
+    "wires": [
+      [
+        "42086ec271055f5c"
+      ]
+    ]
+  },
+  {
+    "id": "a07c4330be5a514c",
+    "type": "dynamodb-variable",
+    "z": "35cc5c27eaa9271f",
+    "awsConfig": "b34262ba5517875e",
+    "operation": "updateItem",
+    "x": 500,
+    "y": 400,
+    "wires": [
+      [
+        "4f36976b42976a10"
+      ]
+    ]
+  },
+  {
+    "id": "75512cf370498126",
+    "type": "dynamodb-variable",
+    "z": "35cc5c27eaa9271f",
+    "awsConfig": "b34262ba5517875e",
+    "operation": "scan",
+    "x": 500,
+    "y": 480,
+    "wires": [
+      [
+        "9faebfec05327623"
+      ]
+    ]
+  },
+  {
+    "id": "8d5bcf788c539d87",
+    "type": "dynamodb-variable",
+    "z": "35cc5c27eaa9271f",
+    "awsConfig": "b34262ba5517875e",
+    "operation": "query",
+    "x": 500,
+    "y": 560,
+    "wires": [
+      [
+        "7bbe13a1649dc157"
+      ]
+    ]
+  },
+  {
+    "id": "d106556a57574e8f",
+    "type": "dynamodb-variable",
+    "z": "35cc5c27eaa9271f",
+    "awsConfig": "b34262ba5517875e",
+    "operation": "deleteItem",
+    "x": 500,
+    "y": 640,
+    "wires": [
+      [
+        "0eb3d857e9309079"
+      ]
+    ]
+  },
+  {
+    "id": "b34262ba5517875e",
+    "type": "dynamodb-variable-config",
+    "name": "Config 1",
+    "region": "eu-central-1"
+  }
+]

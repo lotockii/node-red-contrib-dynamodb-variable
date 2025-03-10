@@ -1,0 +1,36 @@
+<script type="text/javascript">
+    RED.nodes.registerType("dynamodb-variable", {
+        category: "AWS",
+        defaults: {
+            awsConfig: { value: "", type: "dynamodb-variable-config", required: true },
+            operation: { value: "getItem", required: true }
+        },
+        inputs: 1,
+        outputs: 1,
+        color: "#FF9900",
+        icon: "font-awesome/fa-database",
+        label: function () {
+            var configNode = RED.nodes.node(this.awsConfig);
+            return configNode ? "DynamoDB (" + configNode.name + ")" : "DynamoDB (" + this.operation + ")";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="dynamodb-variable">
+    <div class="form-row">
+        <label for="node-input-awsConfig"><i class="fa fa-cog"></i> AWS Config</label>
+        <input type="text" id="node-input-awsConfig" data-config-type="dynamodb-variable-config" data-config-optional="false">
+    </div>
+    <div class="form-row">
+        <label for="node-input-operation"><i class="fa fa-tasks"></i> Operation</label>
+        <select id="node-input-operation">
+            <option value="createTable">Create Table</option>
+            <option value="putItem">Put Item</option>
+            <option value="getItem">Get Item</option>
+            <option value="updateItem">Update Item</option>
+            <option value="deleteItem">Delete Item</option>
+            <option value="scan">Scan Table</option>
+            <option value="query">Query Table</option>
+        </select>
+    </div>
+</script>
