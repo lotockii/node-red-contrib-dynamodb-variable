@@ -5,27 +5,32 @@ module.exports = function (RED) {
     function DynamoDBConfigNode(config) {
         RED.nodes.createNode(this, config);
         this.name = config.name || "DynamoDB Config";
-        this.region = config.region;
+        this.region = config.region || process.env.AWS_REGION || "eu-central-1";
         this.accessKeyId = this.credentials.accessKeyId;
         this.secretAccessKey = this.credentials.secretAccessKey;
 
         this.getClient = () => {
-            if (!this.client) {
-                if (!this.accessKeyId || !this.secretAccessKey) {
-                    throw new Error("AWS Credentials are missing in DynamoDB configuration.");
-                }
-
-                const dynamoClient = new DynamoDBClient({
-                    region: this.region,
-                    credentials: {
-                        accessKeyId: this.accessKeyId,
-                        secretAccessKey: this.secretAccessKey
+            try {
+                if (!this.client) {
+                    if (!this.accessKeyId || !this.secretAccessKey) {
+                        this.warn("AWS Credentials are missing, using IAM Role if available.");
                     }
-                });
 
-                this.client = DynamoDBDocumentClient.from(dynamoClient);
+                    const dynamoClient = new DynamoDBClient({
+                        region: this.region,
+                        credentials: this.accessKeyId && this.secretAccessKey ? {
+                            accessKeyId: this.accessKeyId,
+                            secretAccessKey: this.secretAccessKey
+                        } : undefined
+                    });
+
+                    this.client = DynamoDBDocumentClient.from(dynamoClient);
+                }
+                return this.client;
+            } catch (err) {
+                this.error("Error initializing DynamoDB client: " + err.message, this);
+                return null;
             }
-            return this.client;
         };
     }
 

@@ -1,5 +1,16 @@
-const { DynamoDBClient, CreateTableCommand } = require("@aws-sdk/client-dynamodb");
-const { GetCommand, PutCommand, DeleteCommand, UpdateCommand, ScanCommand, QueryCommand } = require("@aws-sdk/lib-dynamodb");
+const {
+    DynamoDBClient,
+    CreateTableCommand
+} = require("@aws-sdk/client-dynamodb");
+const {
+    DynamoDBDocumentClient,
+    GetCommand,
+    PutCommand,
+    DeleteCommand,
+    UpdateCommand,
+    ScanCommand,
+    QueryCommand
+} = require("@aws-sdk/lib-dynamodb");
 
 module.exports = function (RED) {
     function DynamoDBNode(config) {
@@ -24,6 +35,11 @@ module.exports = function (RED) {
                 const expressionValues = msg.payload.expressionValues;
                 const keyConditionExpression = msg.payload.keyConditionExpression;
                 const expressionNames = msg.payload.expressionNames;
+                const gsiIndex = msg.payload.indexName; // Используем GSI
+                const sortKey = msg.payload.sortKey; // Сортировка по RANGE ключу
+                const billingMode = msg.payload.billingMode || "PAY_PER_REQUEST"; // Billing Mode
+                const projectionExpression = msg.payload.projectionExpression; // Какие атрибуты возвращать
+                const filterExpression = msg.payload.filterExpression; // Фильтрация данных при сканировании
 
                 switch (config.operation) {
                     case "createTable":
@@ -32,21 +48,24 @@ module.exports = function (RED) {
                         response = await client.send(new CreateTableCommand({
                             TableName: tableName,
                             KeySchema: msg.payload.keySchema,
-                            AttributeDefinitions: msg.payload.keySchema.map(attr => ({
-                                AttributeName: attr.AttributeName,
-                                AttributeType: "S"
-                            })),
-                            ProvisionedThroughput: msg.payload.provisionedThroughput || {
+                            AttributeDefinitions: msg.payload.attributeDefinitions,
+                            BillingMode: billingMode,
+                            ProvisionedThroughput: billingMode === "PROVISIONED" ? {
                                 ReadCapacityUnits: 5,
                                 WriteCapacityUnits: 5
-                            }
+                            } : undefined
                         }));
+
                         msg.payload = { success: true, details: response };
                         break;
 
                     case "getItem":
                         if (!key) throw new Error("Missing required parameter: key");
-                        response = await client.send(new GetCommand({ TableName: tableName, Key: key }));
+                        response = await client.send(new GetCommand({
+                            TableName: tableName,
+                            Key: key,
+                            ProjectionExpression: projectionExpression // Выборка только нужных атрибутов
+                        }));
                         msg.payload = response.Item || {};
                         break;
 
@@ -73,14 +92,19 @@ module.exports = function (RED) {
                             Key: key,
                             UpdateExpression: updateExpression,
                             ExpressionAttributeValues: expressionValues,
-                            ExpressionAttributeNames: msg.payload.expressionNames || {},
+                            ExpressionAttributeNames: expressionNames || {},
                             ReturnValues: "UPDATED_NEW"
                         }));
                         msg.payload = { success: true, updatedAttributes: response.Attributes };
                         break;
 
                     case "scan":
-                        response = await client.send(new ScanCommand({ TableName: tableName }));
+                        response = await client.send(new ScanCommand({
+                            TableName: tableName,
+                            ProjectionExpression: projectionExpression, // Выбор атрибутов
+                            FilterExpression: filterExpression, // Фильтрация данных
+                            ExpressionAttributeValues: expressionValues
+                        }));
                         msg.payload = response.Items || [];
                         break;
 
@@ -90,13 +114,26 @@ module.exports = function (RED) {
                             throw new Error("Missing required parameters for query operation");
                         }
 
-                        response = await client.send(new QueryCommand({
+                        const queryParams = {
                             TableName: tableName,
                             KeyConditionExpression: keyConditionExpression,
                             ExpressionAttributeValues: expressionValues,
-                            ExpressionAttributeNames: expressionNames || undefined
-                        }));
+                            ExpressionAttributeNames: expressionNames || undefined,
+                            ProjectionExpression: projectionExpression // Выбор конкретных полей
+                        };
 
+                        // Если указан индекс (GSI), добавляем в параметры
+                        if (gsiIndex) {
+                            queryParams.IndexName = gsiIndex;
+                        }
+
+                        // Если указан sortKey, добавляем в KeyConditionExpression
+                        if (sortKey) {
+                            queryParams.KeyConditionExpression += ` AND createdAt >= :sortKey`;
+                            queryParams.ExpressionAttributeValues[":sortKey"] = sortKey;
+                        }
+
+                        response = await client.send(new QueryCommand(queryParams));
                         msg.payload = response.Items || [];
                         break;
 
