@@ -45,7 +45,7 @@ module.exports = function (RED) {
                     case "createTable":
                         if (!tableName) throw new Error("Missing required parameter: tableName");
 
-                        response = await client.send(new CreateTableCommand({
+                        const createParams = {
                             TableName: tableName,
                             KeySchema: msg.payload.keySchema,
                             AttributeDefinitions: msg.payload.attributeDefinitions,
@@ -54,7 +54,13 @@ module.exports = function (RED) {
                                 ReadCapacityUnits: 5,
                                 WriteCapacityUnits: 5
                             } : undefined
-                        }));
+                        };
+
+                        if (msg.payload.globalSecondaryIndexes) {
+                            createParams.GlobalSecondaryIndexes = msg.payload.globalSecondaryIndexes;
+                        }
+
+                        response = await client.send(new CreateTableCommand(createParams));
 
                         msg.payload = { success: true, details: response };
                         break;
