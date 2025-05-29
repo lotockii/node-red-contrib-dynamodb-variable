@@ -2,6 +2,7 @@
     RED.nodes.registerType("dynamodb-variable", {
         category: "AWS",
         defaults: {
+            name: { value: "" },
             awsConfig: { value: "", type: "dynamodb-variable-config", required: true },
             operation: { value: "getItem", required: true }
         },
@@ -10,16 +11,19 @@
         color: "#FF9900",
         icon: "font-awesome/fa-database",
         label: function () {
-            var configNode = RED.nodes.node(this.awsConfig);
-            return configNode ? "DynamoDB (" + configNode.name + ")" : "DynamoDB (" + this.operation + ")";
+            return this.name || "DynamoDB (" + this.operation + ")";
         }
     });
 </script>
 
 <script type="text/html" data-template-name="dynamodb-variable">
     <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Node name">
+    </div>
+    <div class="form-row">
         <label for="node-input-awsConfig"><i class="fa fa-cog"></i> AWS Config</label>
-        <input type="text" id="node-input-awsConfig" data-config-type="dynamodb-variable-config" data-config-optional="false">
+        <input type="text" id="node-input-awsConfig">
     </div>
     <div class="form-row">
         <label for="node-input-operation"><i class="fa fa-tasks"></i> Operation</label>
@@ -33,4 +37,49 @@
             <option value="query">Query Table</option>
         </select>
     </div>
+</script>
+
+<script type="text/x-red" data-help-name="dynamodb-variable">
+    <p>A Node-RED node for storing and retrieving variables in AWS DynamoDB.</p>
+    
+    <h3>Configuration</h3>
+    <p>Select or create an AWS configuration that contains your DynamoDB credentials and region settings.</p>
+    
+    <h3>Operations</h3>
+    <ul>
+        <li><b>Create Table</b>: Create a new DynamoDB table</li>
+        <li><b>Put Item</b>: Insert or replace an item</li>
+        <li><b>Get Item</b>: Retrieve an item by key</li>
+        <li><b>Update Item</b>: Update specific attributes of an item</li>
+        <li><b>Delete Item</b>: Delete an item by key</li>
+        <li><b>Scan Table</b>: Scan table with optional filtering</li>
+        <li><b>Query Table</b>: Query table or index with key conditions</li>
+    </ul>
+    
+    <h3>Input</h3>
+    <p>The input message should contain operation-specific parameters in <code>msg.payload</code>:</p>
+    
+    <h4>Get Item</h4>
+    <pre>{
+  "tableName": "MyTable",
+  "key": { "id": "123" }
+}</pre>
+    
+    <h4>Put Item</h4>
+    <pre>{
+  "tableName": "MyTable", 
+  "data": { "id": "123", "name": "John" }
+}</pre>
+    
+    <h4>Update Item</h4>
+    <pre>{
+  "tableName": "MyTable",
+  "key": { "id": "123" },
+  "updateExpression": "SET #name = :name",
+  "expressionNames": { "#name": "name" },
+  "expressionValues": { ":name": "Jane" }
+}</pre>
+    
+    <h3>Output</h3>
+    <p>The result is returned in <code>msg.payload</code>. For errors, an error object is returned with details.</p>
 </script>

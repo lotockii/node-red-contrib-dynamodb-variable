@@ -23,10 +23,15 @@ module.exports = function (RED) {
             return;
         }
 
-        const client = dbConfig.getClient();
-
         node.on('input', async (msg, send, done) => {
             try {
+                // Get client with message context for credential resolution
+                const client = dbConfig.getClient(msg, node);
+                
+                if (!client) {
+                    throw new Error("Failed to initialize DynamoDB client");
+                }
+
                 let response;
                 const tableName = msg.payload.tableName;
                 const key = msg.payload.key;

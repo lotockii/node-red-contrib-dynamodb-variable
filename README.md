@@ -26,6 +26,13 @@ Before using this module, configure AWS credentials **inside the DynamoDB Config
 
 These credentials are required for authentication with AWS DynamoDB.
 
+#### Credential Sources
+All connection parameters support multiple input types:
+- **String**: Direct value stored securely in Node-RED credentials
+- **Flow Context**: Retrieved from flow context variables
+- **Global Context**: Retrieved from global context variables
+- **Environment Variable**: Retrieved from environment variables
+
 ---
 
 ## 📌 Available Operations
